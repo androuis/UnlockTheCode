@@ -32,7 +32,7 @@ public class EqualyDistributedLayout extends ViewGroup {
 		this(context);
 		this.elementMaxSize = elementsMaxSize;
 		addTextViewElements(trialEntry);
-		setLayoutParams(new AbsListView.LayoutParams(100, 16));
+		setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 /*		for (int i = 0; i < elementsNumber; i++) {
 			views.add(createTextView());
 			addView(views.get(views.size() - 1));
@@ -54,7 +54,7 @@ public class EqualyDistributedLayout extends ViewGroup {
 	private TextView createView() {
 		TextView view = new TextView(getContext());
 		view.setId(UIHelper.generateRandomInt());
-		view.setLayoutParams(new AbsListView.LayoutParams(11, 11));	
+		view.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));	
 		return view;
 	}
 	
@@ -75,7 +75,7 @@ public class EqualyDistributedLayout extends ViewGroup {
 			if (i != 0) {
 				leftPosition = views.get(i-1).getRight();
 			} 
-			view.layout(leftPosition, 50, leftPosition + (getMeasuredWidth() / elementMaxSize), 60);
+			view.layout(leftPosition, getBottom(), leftPosition + (getMeasuredWidth() / elementMaxSize), getBottom() + 30);
 	    }
 	}
 	
