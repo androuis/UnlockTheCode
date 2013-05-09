@@ -11,9 +11,12 @@ import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.unlockthecode.adapters.TrialsAdapter;
+import com.example.unlockthecode.helpers.UIHelper;
 import com.example.unlockthecode.models.CodeTrial;
 import com.example.unlockthecode.views.MultipleEditText;
 
@@ -22,6 +25,8 @@ public class MainActivity extends Activity implements OnKeyboardActionListener {
 	private Keyboard keyboardLayout;
 	private KeyboardView keyboardView;
 	private MultipleEditText multipleEditText;
+	private TrialsAdapter trialsAdapter;
+	private ListView trialsList;
 	
 	private List<CodeTrial> triedCodes = new ArrayList<CodeTrial>();
 	private List<String> theCode;
@@ -52,13 +57,13 @@ public class MainActivity extends Activity implements OnKeyboardActionListener {
 
 	@Override
 	public void onPress(int primaryCode) {
-		if (primaryCode == KeyEvent.KEYCODE_ENTER) {
+		/*if (primaryCode == KeyEvent.KEYCODE_ENTER) {
 			if (!multipleEditText.areAllSpacesCompleted()) {
 				Toast.makeText(this, "Complete the hole code", Toast.LENGTH_SHORT).show();
 			} else {
 				checkCode(multipleEditText.getCode());
 			}
-		}
+		}*/
 	}
 
 	@Override
@@ -106,17 +111,22 @@ public class MainActivity extends Activity implements OnKeyboardActionListener {
 		keyboardView.setKeyboard(keyboardLayout);
 		keyboardView.setOnKeyboardActionListener(this);
 		multipleEditText = (MultipleEditText) findViewById(R.id.keyboard_input);
+		trialsList = (ListView) findViewById(R.id.trials_list);
 	}
 
 	/**
-	 * Initializes the code to be guessed.
+	 * Initializes: <br/> 
+	 * the code to be guessed, <br/>
+	 * the list adapter, <br/>
 	 */
 	private void initLogic() {
-		Random randomGenerator = new Random();
 		theCode = new ArrayList<String>(multipleEditText.getChildCount());
 		for (int i = 0; i < multipleEditText.getChildCount(); i++) {
-			theCode.add(String.valueOf(randomGenerator.nextInt(multipleEditText.getMaxCharactersForCodeEntry() * 10)));
+			theCode.add(String.valueOf(UIHelper.generateRandomInt(multipleEditText.getMaxCharactersForCodeEntry() * 10)));
 		}
+		
+		trialsAdapter = new TrialsAdapter(trialsList.getContext(), multipleEditText.getViewsWidth(), multipleEditText.getSpaceBetweenViews(), multipleEditText.getChildCount());
+		trialsList.setAdapter(trialsAdapter);
 		
 		TextView codeHint = (TextView) findViewById(R.id.code_hint);
 		StringBuffer sb = new StringBuffer();
@@ -147,10 +157,21 @@ public class MainActivity extends Activity implements OnKeyboardActionListener {
 			}
 		}
 		
-		triedCodes.add(codeTrial);
+		trialsAdapter.addTrial(codeTrial);
 		if (codeTrial.isAllCorrect()) {
-			Toast.makeText(this, "YOU WON!", Toast.LENGTH_SHORT).show();
+			youWon();			
+		} else {
+			youLost();
 		}
+	}
+
+	private void youWon() {
+		Toast.makeText(this, "YOU WON!", Toast.LENGTH_SHORT).show();	
+		//TODO some more stuff
+	}
+
+	private void youLost() {
+		// TODO Auto-generated method stub		
 	}
 
 }

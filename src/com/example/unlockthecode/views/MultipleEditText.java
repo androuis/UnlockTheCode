@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 
 import com.example.unlockthecode.R;
+import com.example.unlockthecode.helpers.UIHelper;
 
 public class MultipleEditText extends ViewGroup implements OnTouchListener {
 
@@ -51,9 +52,8 @@ public class MultipleEditText extends ViewGroup implements OnTouchListener {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private EditText createDefaultEditText() {
-		EditText et = new EditText(getContext());
-		Random randomGenerator = new Random();
-		et.setId(randomGenerator.nextInt());
+		EditText et = new EditText(getContext());		
+		et.setId(UIHelper.generateRandomInt());
 		et.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		et.setGravity(Gravity.CENTER);
 		et.setOnTouchListener(this);
@@ -135,6 +135,14 @@ public class MultipleEditText extends ViewGroup implements OnTouchListener {
 	
 	public int getMaxCharactersForCodeEntry() {
 		return charactersInEditText;
+	}
+	
+	public int getViewsWidth() {
+		return editTexts.get(0).getMeasuredWidth();
+	}
+	
+	public int getSpaceBetweenViews() {
+		return spaceBetweenElements;
 	}
 
 }

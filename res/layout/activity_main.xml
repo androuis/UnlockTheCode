@@ -26,7 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/keyboard_view"
-        android:layout_below="@id/keyboard_input"
         android:layout_margin="5dp"/>
     
     <TextView android:id="@+id/code_hint"
